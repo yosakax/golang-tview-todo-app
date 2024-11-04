@@ -16,8 +16,8 @@ func build(app *tview.Application) *tview.Application {
 	listField := tview.NewList().ShowSecondaryText(false)
 	doneListField := tview.NewList().ShowSecondaryText(false)
 	inputFieldExplanation := "F1 -> move TODO area"
-	listFieldExplanation := "F1 -> move input area\td -> move item to DONE\tx -> remove item\tAlt + → -> move DONE area"
-	doneListFiekdExplanation := "F1 -> move input area\to -> move item to TODO\tx -> remove item\tAlt + ← -> move TODO area"
+	listFieldExplanation := "F1 -> move input area\td -> move item to DONE\tx -> remove item\tRight arrow -> move DONE area"
+	doneListFiekdExplanation := "F1 -> move input area\to -> move item to TODO\tx -> remove item\tLeft arrow -> move TODO area"
 	fotter.SetText(inputFieldExplanation)
 
 	listField.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
@@ -35,7 +35,7 @@ func build(app *tview.Application) *tview.Application {
 		} else if eventRune == rune('x') && listField.GetItemCount() > 0 {
 			listField.RemoveItem(listField.GetCurrentItem())
 		}
-		if (event.Modifiers()&tcell.ModAlt == 0) && eventKey == tcell.KeyRight {
+		if eventKey == tcell.KeyRight {
 			app.SetFocus(doneListField)
 			fotter.SetText(doneListFiekdExplanation)
 		}
@@ -57,7 +57,7 @@ func build(app *tview.Application) *tview.Application {
 			doneListField.RemoveItem(doneListField.GetCurrentItem())
 			listField.SetCurrentItem(0)
 		}
-		if (event.Modifiers()&tcell.ModAlt == 0) && eventKey == tcell.KeyLeft {
+		if eventKey == tcell.KeyLeft {
 			app.SetFocus(listField)
 			fotter.SetText(listFieldExplanation)
 		}
